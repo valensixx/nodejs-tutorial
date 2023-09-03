@@ -12,7 +12,7 @@
 //>
 //PS C:\Users\valen\Desktop\nodejs> 
 
-console.log('Hello World');
+//console.log('Hello World');
 //cd C:\Users\valen\Desktop\nodejs\tutorial_01 node server
 // --> result: Hello World
 
@@ -59,10 +59,17 @@ console.log('Hello World');
 
 const os = require('os');
 const path = require('path');
+//const math = require('./math'); console.log(math.add(2,3)); -->  5
+const {add, subtract, multiply, divide} = require('./math');
+console.log(add(2,3));   // 5
+console.log(subtract(2,3)); //-1
+console.log(multiply(2,3)); //6
+console.log(divide(2,3)); // 0.6666666666666666
 
-console.log(os.type());
-console.log(os.version());
-console.log(os.homedir()); //home directory 
+
+//console.log(os.type());
+//console.log(os.version());
+//console.log(os.homedir()); //home directory 
 
 /*result
 PS C:\Users\valen\Desktop\nodejs\tutorial_01> node server
@@ -72,10 +79,31 @@ Windows 10 Pro
 C:\Users\valen
 */
 
-console.log(__dirname);
-console.log(__filename);
+//console.log(__dirname);
+//console.log(__filename);
 
 /*result:
 C:\Users\valen\Desktop\nodejs\tutorial_01
 C:\Users\valen\Desktop\nodejs\tutorial_01\server.js
+*/
+
+//console.log(path.dirname(__filename));
+//console.log(path.basename(__filename));
+//console.log(path.extname(__filename));
+
+/*result
+C:\Users\valen\Desktop\nodejs\tutorial_01
+server.js
+.js
+*/
+
+//console.log(path.parse(__filename));
+/*result
+{
+  root: 'C:\\',
+  dir: 'C:\\Users\\valen\\Desktop\\nodejs\\tutorial_01',
+  base: 'server.js',
+  ext: '.js',
+  name: 'server'
+}
 */
