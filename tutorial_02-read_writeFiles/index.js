@@ -1,5 +1,30 @@
-const fs = require('fs');
+//const fs = require('fs');
+const fsPromises = require('fs').promises;
 const path = require('path'); //we will use 'path' incase of diierent usage of slashes in a path ridectories -->  .\name  .|name
+
+const fileOps = async () => {  //fileOperations
+    try{
+        const data = await fsPromises.readFile(path.join(__dirname,'files','starter.txt'), 'utf8');
+        console.log(data);
+        await fsPromises.unlink(path.join(__dirname,'files','starter.txt')); //this will delete starter.txt'
+        await fsPromises.writeFile(path.join(__dirname,'files','promiseWrite.txt'), data);
+        await fsPromises.appendFile(path.join(__dirname,'files','promiseWrite.txt'), '\n\n Nice to meet you!');
+        await fsPromises.rename(path.join(__dirname,'files','promiseWrite.txt'), path.join(__dirname,'files','promiseWriteComplete.txt'));
+        const newData = await fsPromises.readFile(path.join(__dirname,'files','promiseWriteComplete.txt'), 'utf8');
+        console.log(newData);
+    } catch(err){
+        console.error(err);
+    }
+}  
+
+fileOps();
+//code will be red and displayed in terminal --> result:  Hello, World!
+
+//fs.readFile(path.join(__dirname,'files','starter.txt'), 'utf8',(err, data) => {
+   //if(err) throw err;
+    //console.log(data);
+//})
+
 
 //fs.readFile('./files/starter.txt', (err, data) =>{
    // if(err) throw err;
@@ -37,10 +62,10 @@ console.log('Hello...');
 
 
 //Now we exit on uncaught errors
-process.on('uncaughtException', err => {
-    console.error(`There was un uncaught error: ${err}`);
-    process.exit(1);
-})
+//process.on('uncaughtException', err => {
+    //console.error(`There was un uncaught error: ${err}`);
+    //process.exit(1);
+//})
 /*Result if use './files/hello.txt'
 PS C:\Users\valen\Desktop\nodejs\tutorial_02-read_writeFiles> node index    
 There was un uncaught error: Error: ENOENT: no such file or directory, open 
@@ -54,26 +79,26 @@ PS C:\Users\valen\Desktop\nodejs\tutorial_02-read_writeFiles>
 //'files'(files directiry), 
 //'starter.text'(name of the file we want to use)
  // Now we will write data:
- fs.writeFile(path.join(__dirname, 'files', 'reply.txt'), 'Nice to meet you!', (err) => {
-    if (err) throw err;
-    console.log('Write task done!');
+ //fs.writeFile(path.join(__dirname, 'files', 'reply.txt'), 'Nice to meet you!', (err) => {
+    //if (err) throw err;
+    //console.log('Write task done!');
 
     // now it will create and update the file reply.txt
-    fs.appendFile(path.join(__dirname, 'files', 'reply.txt'), '\n\n.Yes it is!', (err) => {
-        if (err) throw err;
-        console.log('Append task done!');
+   // fs.appendFile(path.join(__dirname, 'files', 'reply.txt'), '\n\n.Yes it is!', (err) => {
+        //if (err) throw err;
+       // console.log('Append task done!');
 
         // here we will rename the file
-        fs.rename(
-            path.join(__dirname, 'files', 'reply.txt'),
-            path.join(__dirname, 'files', 'newReply.txt'),
-            (err) => {
-                if (err) throw err;
-                console.log('Rename task done!');
-            }
-        );
-    });
-});
+       // fs.rename(
+           // path.join(__dirname, 'files', 'reply.txt'),
+          //  path.join(__dirname, 'files', 'newReply.txt'),
+          //  (err) => {
+              //  if (err) throw err;
+               // console.log('Rename task done!');
+           //}
+       //);
+    //});
+//});
 
 //result: Write task done! and reply.txt file is created 
 //and in the file there is our text: 'Nice to meet you!'
