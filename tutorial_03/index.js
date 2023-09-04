@@ -12,6 +12,9 @@ console.log(format(new Date(),'ddMMyyyy\tHH:mm:ss'));
 
 console.log('hello');
 console.log(uuid());
+console.log(); //uuid will auto add new id with every .log()
 //we add npm i nodemon -D as dev dependance
 
-//now we install npm i uuid
+//now we install npm i uuid  we can also update npm modules and delete them
+//npm update, npm install -g npm@latest, 
+//npm uninstall package-name, npm uninstall -g package-name и др
