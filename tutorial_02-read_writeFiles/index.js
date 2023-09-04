@@ -53,23 +53,28 @@ PS C:\Users\valen\Desktop\nodejs\tutorial_02-read_writeFiles>
 //we are using __dirname(directory name), 
 //'files'(files directiry), 
 //'starter.text'(name of the file we want to use)
-fs.readFile(path.join(__dirname, 'files', 'starter.txt' ), 'utf8' ,(err, data) => {
-    if(err) throw err;
-    console.log(data.toString());
-})  
-// result: Hello, World!
-
-//Now we will write data:
-fs.writeFile(path.join(__dirname, 'files', 'reply.txt' ), 'Nice to meet you!',(err) => {
-    if(err) throw err;
+ // Now we will write data:
+ fs.writeFile(path.join(__dirname, 'files', 'reply.txt'), 'Nice to meet you!', (err) => {
+    if (err) throw err;
     console.log('Write task done!');
 
-    //now it will create and update the file reply.txt
-    fs.appendFile(path.join(__dirname, 'files', 'reply.txt' ), '\n\n.Yes it is!',(err) => {
-        if(err) throw err;
+    // now it will create and update the file reply.txt
+    fs.appendFile(path.join(__dirname, 'files', 'reply.txt'), '\n\n.Yes it is!', (err) => {
+        if (err) throw err;
         console.log('Append task done!');
-    }) 
-}) 
+
+        // here we will rename the file
+        fs.rename(
+            path.join(__dirname, 'files', 'reply.txt'),
+            path.join(__dirname, 'files', 'newReply.txt'),
+            (err) => {
+                if (err) throw err;
+                console.log('Rename task done!');
+            }
+        );
+    });
+});
+
 //result: Write task done! and reply.txt file is created 
 //and in the file there is our text: 'Nice to meet you!'
 //now we got the updated version: added 'Yes it is!'
@@ -81,5 +86,4 @@ fs.writeFile(path.join(__dirname, 'files', 'reply.txt' ), 'Nice to meet you!',(e
     //if(err) throw err;
     //console.log('Append task done!');
 //})  
-//result:  'Append task done!' and the file test.txt is done 
-//with text in it: 'Testing the test.txt'
+//result:  'Append task done!' and the file test.txt is done with text in it: 'Testing the test'
