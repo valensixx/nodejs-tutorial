@@ -63,5 +63,23 @@ fs.readFile(path.join(__dirname, 'files', 'starter.txt' ), 'utf8' ,(err, data) =
 fs.writeFile(path.join(__dirname, 'files', 'reply.txt' ), 'Nice to meet you!',(err) => {
     if(err) throw err;
     console.log('Write task done!');
-})  
-//result: Write task done! and reply.txt file is created
+
+    //now it will create and update the file reply.txt
+    fs.appendFile(path.join(__dirname, 'files', 'reply.txt' ), '\n\n.Yes it is!',(err) => {
+        if(err) throw err;
+        console.log('Append task done!');
+    }) 
+}) 
+//result: Write task done! and reply.txt file is created 
+//and in the file there is our text: 'Nice to meet you!'
+//now we got the updated version: added 'Yes it is!'
+
+
+
+//Now we will update the file using append, append can also create new file, if not exist
+//fs.appendFile(path.join(__dirname, 'files', 'test.txt' ), 'Testing the test.txt',(err) => {
+    //if(err) throw err;
+    //console.log('Append task done!');
+//})  
+//result:  'Append task done!' and the file test.txt is done 
+//with text in it: 'Testing the test.txt'
