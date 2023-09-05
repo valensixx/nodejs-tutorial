@@ -6,20 +6,44 @@ const fsPromises = require('fs').promises;
 const logEvents = require('./logEvents');
 const EventEmitter = require('events');
 class Emitter extends EventEmitter { };
-/*
-In JavaScript, a class is a blueprint or a template for creating objects. 
-It provides a convenient way to define and create objects with 
-shared properties and methods.
-*/
+
 
 //initialize object
 const myEmitter = new Emitter();
 
+myEmitter.on('log', (msg, fileName) => logEvents(msg, fileName));
 const PORT = process.env.PORT || 3500;
+
+const serveFile = async (filePath, contentType, response) => {
+    try{
+        const rawData = await fsPromises.readFile(
+            filePath,
+            !contentType.includes('image') ? 'utf8' : ''
+        );
+        const data = contentType === 'application/json'
+            ? JSON.parse(rawData) : rawData;
+        response.writeHead(
+            filePath.includes('404.html') ? 404 : 200,
+            { 'Content-Type': contentType }
+        );
+        response.end(
+            contentType === 'application/json' ? JSON.stringify(data) : data 
+        );
+    }catch(err){
+        console.log(err);
+        myEmitter.emit('log', `${err.name}: ${err.message}`, 'errLog.txt');
+        response.statusCode = 500;
+        response.end();
+    }
+}
+
+
 
 //setting up our server:
 const server = http.createServer((req, res) => {
     console.log(req.url, req.method);
+    myEmitter.emit('log', `${req.url}\t${req.method}`, 'reqLog.txt');
+
 
     const extension = path.extname(req.url);
 
@@ -64,24 +88,9 @@ const server = http.createServer((req, res) => {
 
     if (fileExists) {
         //serve the file
+        serveFile(filePath, contentType, res);
     } else {
-        //404
-        //301 redirect
-        //console.log(path.parse(filePath));
-
-        //we got response:
-        /*
-            Server running on port 3500
-            / GET
-            {
-             root: 'C:\\',
-            dir: 'C:\\Users\\valen\\Desktop\\nodejs\\tutorial_03\\views',
-            base: 'index.html',
-            ext: '.html',
-            name: 'index'
-            }
-        */
-
+      
             switch(path.parse(filePath).base){
                 case 'old-page.html':
                     res.writeHead(301,{'Location':'/new-page.html'});
@@ -93,18 +102,15 @@ const server = http.createServer((req, res) => {
                     break;
                 default: 
                     //serve a 404 response
+                    serveFile(path.join(__dirname, 'views', '404.html'), 'text/html', res);
             }
     }
 });
 
-server.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-}); //result: Server running on port 3500 // / GET
-
-//add listener for the log event
-/*
-myEmitter.on('log', (msg) => logEvents(msg));
+server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 
-    myEmitter.emit('log', 'Log event emitted!');
-*/
+
+
+
+    
