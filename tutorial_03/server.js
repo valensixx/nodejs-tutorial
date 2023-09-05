@@ -67,7 +67,7 @@ const server = http.createServer((req, res) => {
     } else {
         //404
         //301 redirect
-        console.log(path.parse(filePath));
+        //console.log(path.parse(filePath));
 
         //we got response:
         /*
@@ -81,6 +81,19 @@ const server = http.createServer((req, res) => {
             name: 'index'
             }
         */
+
+            switch(path.parse(filePath).base){
+                case 'old-page.html':
+                    res.writeHead(301,{'Location':'/new-page.html'});
+                    res.end();
+                    break;
+                case 'www.page.html':
+                    res.writeHead(301,{'Location':'/'});
+                    res.end();
+                    break;
+                default: 
+                    //serve a 404 response
+            }
     }
 });
 
