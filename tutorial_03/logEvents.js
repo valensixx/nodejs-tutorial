@@ -8,6 +8,15 @@
 const {format} = require('date-fns');
 const {v4:uuid} = require('uuid');
 
+//import common core modules fs, promices and path:
+const fs = require('fs');
+const fsPromises = require('fs').promises; 
+const path = require('path');
+
+const logEvents = async (message) => {
+    const dateTime = `${format(new Date(),'ddMMyyyy\tHH:mm:ss')}`
+}
+
 console.log(format(new Date(),'ddMMyyyy\tHH:mm:ss'));
 
 console.log('hello');
