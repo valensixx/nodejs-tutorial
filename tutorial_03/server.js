@@ -3,6 +3,16 @@ const app = express();
 const path = require('path');
 const PORT = process.env.PORT || 3500;
 
+//built-in middleware to handle urlencoded data = form data:
+//`content-type: application/x-www-form-urlencoded` 
+app.use(express.urlencoded({extended: false}));
+
+//built-in middlewere for json
+app.use(express.json());
+
+//serve ststic files; This is still middlewere
+app.use(express.static(path.join(__dirname, '/public')));
+
 app.get('^/$|/index(.html)?', (req, res)=>{ // '^/$|/index.html' this says start with / and end with / or /index.html we made .index optional
    // res.sendFile('./views/index.html', {root: __dirname}); //One way to do it 
     res.sendFile(path.join(__dirname, 'views', 'index.html')); //Second way to do it
