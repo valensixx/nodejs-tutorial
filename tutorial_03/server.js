@@ -7,55 +7,25 @@ const { logger } = require('./middleware/logEvents');
 const errorHandler = require('./middleware/errorHandler');
 const PORT = process.env.PORT || 3500;
 
-//custom middleware logger
+// custom middleware logger
 app.use(logger);
 
+// Cross Origin Resource Sharing
+app.use(cors(corsOptions));
 
+// built-in middleware to handle urlencoded form data
+app.use(express.urlencoded({ extended: false }));
 
-//built-in middleware to handle urlencoded data = form data:
-//`content-type: application/x-www-form-urlencoded` 
-app.use(express.urlencoded({extended: false}));
-
-//built-in middlewere for json
+// built-in middleware for json 
 app.use(express.json());
 
-//serve ststic files; This is still middlewere
+//serve static files
 app.use('/', express.static(path.join(__dirname, '/public')));
 
 // routes
 app.use('/', require('./routes/root'));
-app.use('/employees', require('./routes/api/employees'));//now we will focus no REST API
+app.use('/employees', require('./routes/api/employees'));
 
-
-/*
-//Route handlers 
-app.get('/hello(.html)?', (req, res, next) => {
-    console.log('attempted to load hello.html');
-    next();
-}, (req, res)=>{
-    res.send('Hello World!');
-});
-
-//Chaining route handlers:
-const one = (req, res, next) => {
-    console.log('one');
-    next();
-}
-
-const two = (req, res, next) => {
-    console.log('two');
-    next();
-}
-
-const three = (req, res) => {
-    console.log('three');
-    res.send('Finished');
-}
-
-app.get('/chain(.html)?', [one, two, three]);
-*/
-
-//app use('/')
 app.all('*', (req, res) => {
     res.status(404);
     if (req.accepts('html')) {
@@ -70,8 +40,6 @@ app.all('*', (req, res) => {
 app.use(errorHandler);
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-
-
 
 
 
