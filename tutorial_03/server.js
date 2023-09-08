@@ -31,21 +31,16 @@ app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 
 //serve ststic files; This is still middlewere
-app.use(express.static(path.join(__dirname, '/public')));
+app.use('/', express.static(path.join(__dirname, '/public')));
+app.use('subdir', express.static(path.join(__dirname, '/public')));
 
-app.get('^/$|/index(.html)?', (req, res)=>{ // '^/$|/index.html' this says start with / and end with / or /index.html we made .index optional
-   // res.sendFile('./views/index.html', {root: __dirname}); //One way to do it 
-    res.sendFile(path.join(__dirname, 'views', 'index.html')); //Second way to do it
-});
+//routes
+app.use('', require('./routes/root'));
+app.use('/subdir', require('./routes/subdir'));
+app.use('/employees', require('./routes/api/employees')); //now we will focus no REST API
 
-app.get('/new-page(.html)?', (req, res)=>{
-    res.sendFile(path.join(__dirname, 'views', 'new-page.html'));
-});
 
-app.get('/old-page(.html)?', (req, res)=>{
-    res.redirect(301, '/new-page.html'); // 302 by default
-});
-
+/*
 //Route handlers 
 app.get('/hello(.html)?', (req, res, next) => {
     console.log('attempted to load hello.html');
@@ -71,7 +66,7 @@ const three = (req, res) => {
 }
 
 app.get('/chain(.html)?', [one, two, three]);
-
+*/
 
 //app use('/')
 app.all('*', (req, res) => {
