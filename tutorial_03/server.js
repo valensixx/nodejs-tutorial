@@ -32,12 +32,12 @@ app.use(express.json());
 
 //serve ststic files; This is still middlewere
 app.use('/', express.static(path.join(__dirname, '/public')));
-app.use('subdir', express.static(path.join(__dirname, '/public')));
+app.use('/subdir', express.static(path.join(__dirname, '/public')));
 
-//routes
-app.use('', require('./routes/root'));
+// routes
+app.use('/', require('./routes/root'));
 app.use('/subdir', require('./routes/subdir'));
-app.use('/employees', require('./routes/api/employees')); //now we will focus no REST API
+app.use('/employees', require('./routes/api/employees'));//now we will focus no REST API
 
 
 /*
